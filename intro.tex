@@ -1,0 +1,58 @@
+\section{Overview and Objectives}
+
+% TODO(pesose): Motivate the problem in 2-3 paragraphs.
+%  - FreeRTOS is one of the most widely deployed real-time operating systems for microcontrollers,
+%    shipping inside billions of embedded/IoT devices across critical infrastructure, medical,
+%    industrial control, automotive, and consumer products. It is MIT-licensed and community-driven.
+%  - A vulnerability in FreeRTOS (or its libraries / supply chain) propagates to every dependent
+%    device, many of which are unpatchable in the field -> outsized societal/national risk.
+%  - The problem this Track 3 effort addresses: systematically discover safety/security/privacy
+%    vulnerabilities in the FreeRTOS ecosystem and reduce them through prevention, detection, and
+%    recovery -- with fixes validated against real deployments and upstreamed.
+%  - State the overarching goal of this proposal in one bold sentence.
+
+% NOTE (solicitation rule): NO URLs in the Project Description body. Point to the open-source
+% product with an in-line citation that resolves to a References Cited entry, e.g.:
+The open-source product at the center of this proposed ecosystem effort is the \ose{} real-time operating system kernel and its associated libraries~\cite{freertos}.
+
+\subsection{Proposed Effort}
+
+% TODO(pesose): one paragraph overview + an overview figure (understand the ecosystem -> discover
+% vulnerabilities -> prevent/harden -> detect & recover -> upstream). Reuse the tikz overview style
+% from the lab's template if helpful.
+This proposal pursues a three-activity agenda, \sysname, that follows a \emph{discover $\rightarrow$ prevent/harden $\rightarrow$ detect \& recover} arc, all fed back upstream into the \ose{} ecosystem.
+
+\noindent\textbf{Activity 1: \actone.}
+% The team's core capability: find the bugs. Continuous, scalable discovery (fuzzing, static/dynamic
+% analysis, symbolic execution) across the kernel and libraries. This is the engine, not the deliverable.
+
+\noindent\textbf{Activity 2: \acttwo.}
+% Turn findings into durable prevention: memory-safety hardening, secure-development practices,
+% software bills of materials (SBOMs), and supply-chain integrity for the ecosystem.
+
+\noindent\textbf{Activity 3: \actthree.}
+% Detection, response, and recovery: CI security gates, monitoring, coordinated disclosure, and a
+% sustainable upstreaming/recovery process with the FreeRTOS maintainer community.
+
+\subsection{Relevance to PESOSE (Track 3)}
+
+% TODO(pesose): tie explicitly to the solicitation. PESOSE Track 3 "addresses vulnerabilities in
+% open-source products and infrastructure" -- technical AND socio-technical (supply chain, insider,
+% poisoned ML). Stress that this is ecosystem HARDENING (prevention/detection/recovery), validated
+% with users and upstreamed -- not standalone bug-finding research.
+This effort directly serves PESOSE Track 3, which strengthens the security, privacy, and resilience of critical open-source ecosystems by identifying vulnerabilities, mitigating risks, and building sustainable prevention, detection, and recovery processes.
+
+\subsection{Team Qualifications}
+
+% TODO(pesose): make the case that the team is qualified (REQUIRED by the solicitation), AND that
+% it can get fixes ADOPTED upstream (the key Track-3 risk for an outside team). If there is any
+% relationship with the FreeRTOS maintainer/AWS community, prior accepted PRs, or an MoU, state it.
+The team has a sustained track record in embedded and microcontroller (MCU) systems security~\cite{tan24sok, nino24firware, ma2023dac, zhao24tee}, precisely the layer on which \ose{} runs.
+\textbf{PI Zhao}, an Associate Professor at the Khoury College of Computer Sciences at Northeastern University, leads a group that systematically studies MCU/IoT firmware security, including crawling and analyzing thousands of real-world MCU firmware samples to identify vulnerabilities~\cite{nino24firware}.
+The team also brings deep hands-on offensive and defensive embedded experience: PI Zhao has led teams in the MITRE Embedded Capture-the-Flag (eCTF) competition for six consecutive years~\TODO{confirm years/placements and cite}, giving an attacker's-eye understanding of exactly the vulnerability classes this effort targets.
+\textbf{Co-PI Engin Kirda}, a Professor at Northeastern, brings extensive expertise in systems security, malware analysis, and large-scale program analysis~\TODO{cite Kirda's most relevant works and add 1-2 sentences on his role (discovery/analysis tooling for Activity~1)}.
+% TODO(pesose): state the division of labor between PI Zhao and co-PI Kirda explicitly.
+The effort is further supported by a validation collaborator, \textbf{Prof.\ Aanjhan Ranganathan} (Northeastern), who operates a drone/IoT security testbed built on \ose-based platforms (e.g., the Crazyflie nano-quadcopter and ESP32-class nodes), providing real-deployment validation for discovered-and-hardened vulnerabilities and a letter of collaboration as a \ose{} user.
+% TODO(pesose): confirm Ranganathan's exact FreeRTOS-based platforms; he is a COLLABORATOR (letter +
+% validation), not a co-PI. This also helps satisfy the 3-5 letters-of-collaboration requirement and
+% the Track-3 "validation with existing users" evaluation requirement.

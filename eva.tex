@@ -1,0 +1,26 @@
+\section{Evaluation Plan}
+
+% Track 3 REQUIREMENT (solicitation): "Describe how success will be measured. Include metrics, tools,
+% and benchmarks for assessing progress and effectiveness. Ideally, the evaluation plan should
+% incorporate testing and validation opportunities with existing users."
+% Also a Track-3 review criterion: "a specific, actionable list of milestones and evaluation plan."
+
+\noindent\textbf{Activity 1 (Discover).}
+% TODO(pesose): metrics -- number/severity of confirmed vulnerabilities; code/edge coverage achieved
+% on target libraries; reproduction rate; time-to-find vs. baselines. Benchmarks: known-bug corpora /
+% injected-bug benchmarks for FreeRTOS libraries. \TODO{set concrete targets and name baselines}
+
+\noindent\textbf{Activity 2 (Prevent/Harden).}
+% TODO(pesose): metrics -- vulnerability classes eliminated by construction; hardening overhead
+% (code size, RAM, run-time) on representative MCU targets (must stay within embedded budgets);
+% SBOM coverage of the release; secure-dev practice conformance. \TODO{set concrete targets}
+
+\noindent\textbf{Activity 3 (Detect/Recover).}
+% TODO(pesose): metrics -- CI gate catch-rate on regression/injected bugs; time-from-disclosure-to-
+% fix; fraction of fixes upstreamed and adopted; downstream-notification coverage via SBOM.
+
+\noindent\textbf{Validation with existing users.}
+A primary validation channel is the \ose-based drone/IoT testbed operated by collaborator Prof.\ Ranganathan (e.g., Crazyflie and ESP32-class platforms), on which discovered-and-hardened vulnerabilities are reproduced and the hardening's footprint/overhead is measured on real deployments.
+% TODO(pesose): detail the validation protocol on Ranganathan's testbed; add any other FreeRTOS
+% users/contributors who will validate (ties to the 3-5 required letters of collaboration).
+\TODO{name additional validation partners / real deployments}

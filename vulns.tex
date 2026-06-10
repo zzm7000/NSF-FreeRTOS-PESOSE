@@ -1,0 +1,57 @@
+\section{Targeted Vulnerabilities and Risks}
+\label{sec:vulns}
+
+% Track 3 REQUIREMENT (solicitation): "Specify the classes of vulnerabilities to be addressed and
+% the expected impact of mitigating them. Discuss attack methods being targeted, including technical
+% risks and socio-technical risks. Include any known prior incidents or patterns of exploitation."
+% Also satisfies the Track-3 review criterion: "clearly describe the vulnerability landscape."
+
+\ose{} is written in C and runs with no memory-management unit and few hardware protections on the typical microcontroller, so a single memory-safety defect in widely reused code can yield remote code execution on millions of fielded, hard-to-patch devices.
+We therefore prioritize the vulnerability classes by \emph{blast radius}: the network-facing, attacker-reachable parsing code shared across the ecosystem, and the components whose compromise propagates to the most dependents.
+Three components are \emph{in scope} for this proposal: (i) the \ose+TCP/IP networking stack, the historical CVE hotspot and the most directly attacker-reachable code; (ii) the connectivity libraries layered on top of it (coreMQTT, coreHTTP, and the coreJSON parser they rely on), which parse untrusted protocol data; and (iii) the kernel concurrency primitives (the scheduler, queues, stream/message buffers, and ISR/critical-section handling), whose real-time-specific defects are poorly served by existing tooling.
+% TODO(pesose): justify the prioritization in 1-2 sentences. Cryptographic/key-management and OTA
+% components are adjacent and acknowledged below, but are NOT primary targets of this effort.
+
+\subsection{Technical Vulnerability Classes}
+
+\noindent\textbf{Memory-safety defects in attacker-reachable C code.}
+The highest-risk surface is the network-facing stack, which parses untrusted input directly on the device.
+This is not hypothetical: in 2018, Zimperium zLabs disclosed 13 vulnerabilities in the FreeRTOS+TCP/IP stack used by FreeRTOS and AWS FreeRTOS, including remote code execution, information leak, and denial of service reachable by a network adversary~\cite{zimperium2018freertos}~\TODO{confirm the exact CVE IDs (CVE-2018-16522..16528, 16599..16603) and cite each}.
+Subsequent out-of-bounds and overflow CVEs in the same stack's DNS, DHCP, ARP, and ND parsing show this is a \emph{recurring} class, not a one-time event~\TODO{cite the later FreeRTOS+TCP CVEs}.
+Mitigating this class removes the most directly weaponizable bugs in the ecosystem.
+
+\noindent\textbf{Integer and length-handling errors.}
+% TODO(pesose): arithmetic/length bugs (e.g., in packet/length fields) that feed the overflows above.
+
+\noindent\textbf{Concurrency and RTOS-specific defects (primary target).}
+A real-time kernel exposes defect classes that conventional memory-safety tooling largely ignores: data races and unsynchronized access to queues, stream buffers, and message buffers; priority inversion; and incorrect use of critical sections and interrupt-service routines.
+Because these depend on scheduling and interrupt timing rather than on a single input, they are hard to find with input fuzzing alone, making them both high-impact and an opportunity for a distinctive RTOS-aware analysis contribution.
+% TODO(pesose): name the concrete kernel objects/APIs in scope and the RTOS-aware analysis approach
+% (tie to Activity 1).
+
+\noindent\textbf{Cryptographic and OTA components (acknowledged, not primary).}
+% TODO(pesose): briefly acknowledge corePKCS11 / TLS integration / OTA signature verification as
+% adjacent confidentiality-integrity surface, but state they are out of this proposal's primary scope.
+
+\subsection{Socio-Technical Risks}
+
+\noindent\textbf{Supply-chain and fragmentation risk.}
+Chip vendors routinely fork and bundle \ose{} inside their SDKs, where it drifts from upstream; without robust software bills of materials (SBOMs) and provenance, a downstream integrator cannot tell whether a given upstream CVE affects their shipped firmware.
+% TODO(pesose): expand -- dependency provenance, build/release integrity, the SBOM gap.
+
+\noindent\textbf{Maintainer bandwidth and bus-factor risk.}
+% TODO(pesose): the human/governance risk -- limited maintainer capacity relative to the size of the
+% dependent base; how this effort adds sustainable security capacity rather than one-off patches.
+
+\noindent\textbf{Untrusted contributions and ports.}
+% TODO(pesose): risk from third-party ports/contributions; (if relevant) poisoned dependencies.
+
+\subsection{Attack Methods and Prior Incidents}
+
+\noindent\textbf{Remote network exploitation.}
+The 2018 FreeRTOS+TCP cluster~\cite{zimperium2018freertos} is the archetypal attack method: a remote, unauthenticated adversary sends crafted packets to reach the parsing bugs above.
+
+\noindent\textbf{Physical fault injection (capability noted; out of scope).}
+The microcontrollers \ose{} runs on are also exposed to physical fault injection (e.g., voltage/clock glitching), and the PIs bring hands-on fault-injection experience from six years of the MITRE eCTF competition.
+We note this capability for completeness and to establish the team's depth at the hardware/software boundary, but physical fault injection is \emph{explicitly out of scope} for this proposal, which focuses on discovering and reducing software vulnerabilities in the \ose{} codebase and its libraries.
+% TODO(pesose): keep this framing tight -- one or two sentences; do not let it expand the scope.

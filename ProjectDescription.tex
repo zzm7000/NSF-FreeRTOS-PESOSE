@@ -1,0 +1,258 @@
+% NSF PESOSE proposal (NSF 26-506) -- Project Description, TRACK 3 (Improving safety, security, privacy).
+% Track 3: max $1,500,000 over up to 2 years. Project Description limit: 15 pages.
+% Title prefix MUST be "PESOSE: Track 3: <Title>". Last line of the Project Summary MUST be a
+% prioritized "Keywords:" list (2-5, semicolon-separated). No URLs in the Project Description body --
+% point to the open-source product via an in-line citation + a References Cited entry.
+%
+% Track 3 Project Description MUST address (see solicitation):
+%   - Societal, National, and Economic Impact (+ what depends on the OSE)   -> impact.tex
+%   - Targeted Vulnerabilities and Risks (technical + socio-technical)      -> vulns.tex
+%   - Development Plan (with yearly milestones; memory-safe langs, SBOMs)   -> devplan.tex
+%   - Evaluation Plan (metrics/benchmarks, ideally validated with users)    -> eva.tex
+% Plus every PESOSE proposal: pointer to the existing public product, its current dev/testing model,
+% dissemination, user base, contributor base; the problem; strong team-qualification justification.
+% Page budget (15 pages):
+%   Overview/Objectives ~2 | The FreeRTOS OSE (product status) ~1.5 | Impact ~1.5
+%   Vulnerabilities & Risks ~3 | Development Plan ~5 | Evaluation ~1 | Broader Impacts/Timeline/Prior ~1
+
+\documentclass[11pt,oneside,onecolumn,letterpaper]{article}
+%\usepackage[OT1]{fontenc}
+\usepackage{times}
+\usepackage[margin=1in]{geometry}
+%\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{latexsym}
+%\usepackage{subfigure}
+\usepackage{wrapfig}
+\usepackage{amsthm}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage[hyphens]{url}
+\usepackage{pifont}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage[square, comma, sort&compress, numbers]{natbib}
+\usepackage{pgfgantt}
+\usepackage{enumitem}
+\usepackage{subcaption}
+\usepackage{titlesec}
+\usepackage{xspace}
+\usepackage{arydshln}
+\usepackage{circledsteps}
+\usepackage{listings}
+\usepackage{stfloats}
+\usepackage{comment}
+\usepackage{fmtcount}
+\usepackage{lipsum}
+\usepackage{soul}
+\usepackage[textsize=tiny]{todonotes}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{threeparttable}
+\usepackage{tcolorbox}
+\usepackage{minted}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,fit}
+
+\newcommand{\rulebox}[1]{
+	\begin{tcolorbox}[
+		%width=4in,
+		boxsep=0pt,
+		left=2pt,
+		right=2pt,
+		top=1pt,
+		bottom=1pt,
+		boxrule=0.5pt,
+		]
+		#1
+	\end{tcolorbox}
+}
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=0.7pt] (char) {#1};}}
+
+\titlespacing\section{0pt}{4pt plus 2pt minus 2pt}{6pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{4pt plus 2pt minus 2pt}{2pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{4pt plus 4pt minus 2pt}{2pt plus 2pt minus 2pt}
+
+\titleformat{\section}
+{\fontsize{12}{15}\bfseries}{\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\fontsize{11}{15}\bfseries}{\thesubsection}{1em}{}
+
+% Inline review/comment macro (highlighted). Wrap notes you do NOT want in the final PDF.
+\newcommand{\ziming}[1]{%
+  \begingroup
+  \definecolor{hlcolor}{RGB}{20, 255, 20}\sethlcolor{hlcolor}%
+  \textcolor{black}{\hl{\textit{\textbf{Ziming:} #1}}}%
+  \endgroup
+}
+
+% Salient placeholder/TODO marker -- bright red bold so unfilled gaps are impossible to miss
+% in the compiled PDF. Remove before submission.
+\definecolor{todored}{rgb}{0.85,0,0}
+\newcommand{\TODO}[1]{\textcolor{todored}{\textbf{[TODO: #1]}}}
+
+% Placeholder for a not-yet-available photo/figure: a red-framed gray box with a label.
+\newcommand{\photoplaceholder}[2][0.3\textwidth]{%
+  \fcolorbox{red}{gray!12}{\parbox[c][2.6cm][c]{#1}{\centering\footnotesize\textcolor{red}{\textbf{[PHOTO: #2]}}}}%
+}
+
+% ---------------------------------------------------------------------------
+% TODO(pesose): name the effort/managing-effort this proposal introduces.
+% \sysname is a working placeholder name -- rename to the final project name.
+% ---------------------------------------------------------------------------
+\newcommand{\sysname}{{\scshape Sentry}\xspace}      % TODO(pesose): pick the final effort name
+\newcommand{\ose}{\textsc{FreeRTOS}\xspace}           % the open-source product / ecosystem being secured
+
+% Development-Plan activity titles. Arc: discover -> prevent/harden -> detect & recover.
+% This embeds the team's core "find the bugs" goal (Activity 1) inside a full Track-3 hardening agenda,
+% as the solicitation requires (prevention, detection, recovery). Refine wording as the proposal matures.
+\newcommand{\actone}{Continuous, Scalable Vulnerability Discovery for the \ose Codebase}
+\newcommand{\acttwo}{Prevention and Hardening: Memory Safety, Secure-Development Practices, and SBOMs}
+\newcommand{\actthree}{Detection, Response, and Recovery for the \ose Ecosystem}
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\pgfkeys{/csteps/inner xsep=1.5pt}
+\pgfkeys{/csteps/inner ysep=1.5pt}
+
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\tiny,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=none,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+}
+
+\newcounter{goal}
+\newcommand{\goal}[1]{
+  \stepcounter{goal}
+  \textbf{G\padzeroes[1]\decimal{goal}. #1}
+}
+
+\lstset{style=mystyle}
+
+\graphicspath{{./figs/}}
+
+\begin{document}
+
+\pagenumbering{gobble}
+
+\begin{center}
+{\large{\bf
+% Title MUST start with "PESOSE: Track 3:" per the solicitation.
+PESOSE: Track 3: \sysname: Securing the \ose{} Open-Source Ecosystem through Continuous Vulnerability Discovery, Hardening, and Recovery}}
+\end{center}
+
+\input{intro}
+
+\input{product.tex}
+
+\input{impact.tex}
+
+\input{vulns.tex}
+
+\input{devplan.tex}
+
+\input{eva.tex}
+
+\input{bi.tex}
+
+\section{Project Timeline and Milestones}
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+	\vspace{-1cm}
+	\definecolor{barblue}{RGB}{153,204,254}
+	\definecolor{groupblue}{RGB}{51,102,254}
+	\definecolor{linkred}{RGB}{165,0,33}
+	\centering
+	\begin{ganttchart}%
+		[canvas/.style={fill=none, draw=black!84, line width=.35pt},
+		hgrid style/.style={draw=black!84, line width=.75pt},
+		vgrid={{*3{draw=black!32, line width=.75pt},*1{draw=black!84, line width=.75pt}}},
+		title/.style={draw=none, fill=none},
+		title label font=\footnotesize,
+		title label anchor/.style={below=-1.5ex},
+		include title in canvas=false,
+		bar label font=\footnotesize\color{black!84},
+		bar label anchor/.style={left=0cm},
+		bar height=0.3,
+		bar/.style={draw=none, fill=black!63},
+		bar incomplete/.style={fill=barblue},
+		milestone progress label font=\footnotesize\color{black!70},
+		group incomplete/.style={fill=groupblue},
+		group left shift=0,
+		group right shift=0,
+		group height=.3,
+		group label font=\bfseries\footnotesize,
+		group label anchor/.style={left=0cm},
+		link/.style={-latex, line width=1.pt, linkred},
+		link label font=\footnotesize\bfseries\color{linkred}\MakeUppercase,
+		link label anchor/.style={below left=-1.0ex and 0},
+		x unit=0.62cm, y unit title=.35cm, y unit chart=0.34cm
+		]{1}{8}
+		\gantttitle{Year 1}{4}
+		\gantttitle{Year 2}{4}\\
+		\ganttgroup[]%
+		{\textbf{Activity 1}}{1}{5} \\
+		\ganttbar[]{Discovery infra.}{1}{3} \\
+		\ganttbar[]{Campaigns}{2}{5} \\
+		[grid]
+		\ganttgroup[]%
+		{\textbf{Activity 2}}{3}{7} \\
+		\ganttbar[]{Hardening}{3}{6} \\
+		\ganttbar[]{SBOM/secure-dev}{5}{7} \\
+		[grid]
+		\ganttgroup[]%
+		{\textbf{Activity 3}}{5}{8} \\
+		\ganttbar[]{Detection/CI}{5}{7} \\
+		\ganttbar[]{Recovery+upstream}{7}{8}
+	\end{ganttchart}
+	\vspace{-0.4cm}
+	\caption{Two-year project timeline (Track 3: up to 2 years).}
+	\label{fig:timeline}
+	\vspace{-2pt}
+\end{wrapfigure}
+Figure~\ref{fig:timeline} provides a Gantt chart for the activities outlined in this proposal.
+% TODO(pesose): describe the timeline narrative and list the concrete yearly milestones the
+% solicitation asks for (Track 3 "Development Plan ... including key milestones for each year").
+
+\section{Results from Prior NSF Support}
+
+% TODO(pesose): update each entry (award #, amount, period, IM/BI, one outcome with citation).
+PI Zhao (NEU): \emph{``CAREER: SaTC: Rethinking Trusted Execution Environments for Embedded and IoT Systems"} (CNS-2237238, \$564,748, 2/2023 - 1/2028).
+\ul{Intellectual Merit:} A systematic research approach to increase the trustworthiness and deployability of TEEs for embedded and IoT devices.
+\ul{Broader Impacts:} Training the next generation of cybersecurity researchers, educators, and practitioners with deep theoretical understandings and practical skills.
+\ul{Outcome:} Return-to-non-secure attacks on ARM Cortex-M TrustZone~\cite{ma2023dac}.
+
+\newpage
+\bibliographystyle{ieeetr}
+\bibliography{bib, MyPub}
+\end{document}

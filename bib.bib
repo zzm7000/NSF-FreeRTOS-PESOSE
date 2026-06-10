@@ -1,0 +1,76 @@
+% New references for the PESOSE Track 3 (FreeRTOS) proposal.
+% The PI's own publications live in MyPub.bib (cited via \bibliography{bib, MyPub}).
+%
+% NOTE: URLs are forbidden in the Project Description body, but the References Cited section is
+% where the pointer to the open-source product belongs. Keep the \url{} in the bib entry below.
+
+% ---------------------------------------------------------------------------
+% REQUIRED: pointer to the existing public open-source product being secured.
+% ---------------------------------------------------------------------------
+@misc{freertos,
+  author       = {{Amazon Web Services and the FreeRTOS community}},
+  title        = {{FreeRTOS}: Real-Time Operating System for Microcontrollers and Small Microprocessors},
+  howpublished = {Open-source software (MIT License)},
+  note         = {\url{https://github.com/FreeRTOS/FreeRTOS} \TODO{confirm exact repo/version to cite}},
+  year         = {2026}
+}
+
+% ---------------------------------------------------------------------------
+% Guidance the solicitation explicitly encourages proposers to consider.
+% ---------------------------------------------------------------------------
+@misc{cisa_nsa_supplychain,
+  author       = {{U.S. Cybersecurity and Infrastructure Security Agency (CISA) and U.S. National Security Agency (NSA)}},
+  title        = {Securing the Software Supply Chain: Recommended Practices for Developers},
+  howpublished = {Guidance},
+  note         = {\TODO{confirm title/year and cite}},
+  year         = {2022}
+}
+
+@misc{openssf_bestpractices,
+  author       = {{Open Source Security Foundation (OpenSSF)}},
+  title        = {Best Practices for Open Source Developers},
+  howpublished = {OpenSSF},
+  note         = {\TODO{confirm and cite}},
+  year         = {2024}
+}
+
+% ---------------------------------------------------------------------------
+% Team publications cited in intro.tex / team-qualifications (carried over).
+% ---------------------------------------------------------------------------
+@inproceedings{tan24sok,
+  author = {Tan, Xi and Ma, Zheyuan and Pinto, Sandro and Guan, Le and Zhang, Ning and Xu, Jun and Lin, Zhiqiang and Hu, Hongxin and Zhao, Ziming},
+  title = {{SoK: Where's the ``up''?! A Comprehensive (bottom-up) Study on the Security of Arm Cortex-M Systems}},
+  booktitle = {{USENIX WOOT Conference on Offensive Technologies}},
+  year = {2024}
+}
+
+@inproceedings{nino24firware,
+  author = {Nino, Nicolas and Lu, Ruibo and Zhou, Wei and Lee, Kyu Hyung and Zhao, Ziming and Guan, Le},
+  title = {{Unveiling IoT Security in Reality: A Firmware-Centric Journey}},
+  booktitle = {{USENIX Security Symposium}},
+  year = {2024}
+}
+
+@inproceedings{zhao24tee,
+  author = {Zhao, Ziming and Armanuzzaman, Md and Tan, Xi and Ma, Zheyuan},
+  title = {{Trusted Execution Environments in Embedded and IoT Systems: A CactiLab Perspective}},
+  booktitle = {{IEEE International Symposium on Secure and Private Execution Environment Design}},
+  year = {2024}
+}
+
+% ---------------------------------------------------------------------------
+% Prior incident: the 2018 Zimperium zLabs FreeRTOS+TCP/IP disclosure (13 vulns, incl. RCE).
+% ---------------------------------------------------------------------------
+@misc{zimperium2018freertos,
+  author       = {Karliner, Ori},
+  title        = {{FreeRTOS TCP/IP Stack Vulnerabilities Put a Wide Range of Devices at Risk of Compromise: From Smart Homes to Critical Infrastructure Systems}},
+  howpublished = {Zimperium zLabs},
+  year         = {2018},
+  note         = {\TODO{confirm exact title/date and the enumerated CVE IDs}}
+}
+
+% ---------------------------------------------------------------------------
+% TODO(pesose): add references for -- later FreeRTOS+TCP CVEs/incidents (e.g., FreeRTOS+TCP advisories),
+% FreeRTOS user-base / deployment statistics, memory-safety / Rust-on-MCU work, SBOM standards
+% (SPDX/CycloneDX), and fuzzing/analysis tools used in Activity 1.
+% ---------------------------------------------------------------------------

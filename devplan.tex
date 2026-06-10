@@ -1,0 +1,64 @@
+\section{Development Plan}
+
+% Track 3 REQUIREMENT (solicitation): "Provide a detailed plan for addressing vulnerabilities,
+% including key milestones for each year of the award. For software-focused OSEs, note technical
+% considerations such as using memory-safe languages or software bills of materials."
+% Structure: three activities = discover -> prevent/harden -> detect & recover, each with yearly
+% milestones. (Year-by-year milestones are also listed near the Timeline in ProjectDescription.tex.)
+
+\subsection{Activity 1: \actone}
+\label{sec:act1}
+
+\noindent\textbf{Objective.}
+% TODO(pesose): continuously and scalably surface exploitable defects in the FreeRTOS kernel and
+% libraries -- the team's core "find the bugs" capability, framed defensively.
+
+\noindent\textbf{Approach.}
+% Scope (locked): FreeRTOS+TCP, the coreMQTT/coreHTTP/coreJSON connectivity parsers, and the kernel
+% concurrency primitives. Crypto/OTA and physical fault injection are out of primary scope (see vulns.tex).
+% TODO(pesose): the discovery toolbox and how it is applied to these targets:
+%  - Coverage-guided fuzzing of the parsing-heavy targets (FreeRTOS+TCP, coreMQTT, coreHTTP, coreJSON),
+%    with harnesses + emulation (e.g., QEMU/renode) so campaigns run at scale off-device.
+%  - Static analysis / sanitizers / symbolic execution for memory-safety and length/integer bugs.
+%  - RTOS-aware analysis for scheduler/queue/stream-buffer/ISR/critical-section races -- the
+%    distinctive, under-tooled class.
+%  - Triage + reproducible PoCs, validated on real hardware where needed (team testbed).
+
+\noindent\textbf{Year 1 / Year 2 milestones.} \TODO{e.g., Y1: discovery infra + harnesses for N libraries, first confirmed-and-reported vulnerabilities; Y2: continuous campaign + measured coverage targets.}
+
+\subsection{Activity 2: \acttwo}
+\label{sec:act2}
+
+\noindent\textbf{Objective.}
+% TODO(pesose): turn findings into durable PREVENTION across the ecosystem.
+
+\noindent\textbf{Approach.}
+% TODO(pesose): solicitation explicitly mentions memory-safe languages and SBOMs:
+%  - Selective memory-safety hardening of hot/critical components (e.g., Rust components or
+%    safe-C transformations / bounds checking) where it can be upstreamed without breaking the
+%    MCU footprint -- discuss feasibility honestly given FreeRTOS's resource constraints.
+%  - Secure-development practices: CISA/NSA secure-software-supply-chain guidance and the OpenSSF
+%    best practices (the solicitation explicitly encourages these). Cite in References Cited.
+%  - Software Bills of Materials (SBOMs) and provenance for FreeRTOS releases and vendor bundles.
+
+\noindent\textbf{Year 1 / Year 2 milestones.} \TODO{e.g., Y1: SBOM + secure-dev baseline, hardening prototype for one component; Y2: upstreamed hardening for K components.}
+
+\subsection{Activity 3: \actthree}
+\label{sec:act3}
+
+\noindent\textbf{Objective.}
+% TODO(pesose): detection, response, and recovery -- the resilience half of Track 3.
+
+\noindent\textbf{Approach.}
+% TODO(pesose):
+%  - Detection: security gates in CI (fuzzing/sanitizers/regression oracles) that run continuously.
+%  - Response: coordinated disclosure + patch pipeline with the FreeRTOS maintainer community.
+%  - Recovery: a sustainable, documented process so the ecosystem keeps benefiting after the award
+%    (downstream notification, LTS backports, SBOM-driven impact analysis for dependents).
+
+\noindent\textbf{Year 1 / Year 2 milestones.} \TODO{e.g., Y1: CI security gate piloted; Y2: end-to-end disclosure-to-recovery process demonstrated and handed to maintainers.}
+
+\subsection{Upstream Adoption Strategy}
+% TODO(pesose): CRITICAL for an outside team. How findings/hardening actually LAND in FreeRTOS:
+% relationship with maintainers/AWS, contribution workflow, prior accepted PRs, letters of
+% collaboration from FreeRTOS users/contributors (3-5 required as a separate supplementary doc).
